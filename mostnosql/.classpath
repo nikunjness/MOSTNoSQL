@@ -2,5 +2,17 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
+	<classpathentry kind="lib" path="/media/nikunj/E4241F6A241F3ECC/Users/Nikunj/Downloads/CassandraDemo/JarFiles/cassandra-all-0.7.4.jar"/>
+	<classpathentry kind="lib" path="/media/nikunj/E4241F6A241F3ECC/Users/Nikunj/Downloads/CassandraDemo/JarFiles/cassandra-javautils-0.7.0.jar"/>
+	<classpathentry kind="lib" path="/media/nikunj/E4241F6A241F3ECC/Users/Nikunj/Downloads/CassandraDemo/JarFiles/commons-lang-2.4.jar"/>
+	<classpathentry kind="lib" path="/media/nikunj/E4241F6A241F3ECC/Users/Nikunj/Downloads/CassandraDemo/JarFiles/google-collect-1.0.jar"/>
+	<classpathentry kind="lib" path="/media/nikunj/E4241F6A241F3ECC/Users/Nikunj/Downloads/CassandraDemo/JarFiles/hector-core-0.7.0-29.jar"/>
+	<classpathentry kind="lib" path="/media/nikunj/E4241F6A241F3ECC/Users/Nikunj/Downloads/CassandraDemo/JarFiles/high-scale-lib-1.1.1.jar"/>
+	<classpathentry kind="lib" path="/media/nikunj/E4241F6A241F3ECC/Users/Nikunj/Downloads/CassandraDemo/JarFiles/libthrift-0.5.0.jar"/>
+	<classpathentry kind="lib" path="/media/nikunj/E4241F6A241F3ECC/Users/Nikunj/Downloads/CassandraDemo/JarFiles/log4j-1.2.15.jar"/>
+	<classpathentry kind="lib" path="/media/nikunj/E4241F6A241F3ECC/Users/Nikunj/Downloads/CassandraDemo/JarFiles/perf4j-0.9.12.jar"/>
+	<classpathentry kind="lib" path="/home/nikunj/Downloads/apache-log4j-1.2.17/log4j-1.2.17.jar"/>
+	<classpathentry kind="lib" path="/home/nikunj/Downloads/slf4j-1.7.5/slf4j-api-1.7.5.jar"/>
+	<classpathentry kind="lib" path="/home/nikunj/Downloads/slf4j-1.7.5/slf4j-simple-1.7.5.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
