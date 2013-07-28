@@ -10,6 +10,7 @@ import me.prettyprint.hector.api.mutation.Mutator;
 import me.prettyprint.hector.api.query.MultigetSliceQuery;
 import me.prettyprint.hector.api.query.QueryResult;
 import me.prettyprint.hector.api.query.SliceQuery;
+import java.sql.*;
 
 public class CassandraExample {
 
@@ -127,13 +128,43 @@ public class CassandraExample {
     
     
 	public static void main(String[] args) {
+		Migration mig=new Migration();
+		mig.setConnection();
+		ResultSet rs=mig.getAllDatapoints();
+		try {
+			while (rs.next())
+			{
+					String datapoint_name = rs.getString(1);
+					/*Date dt=rs.getDate(2);
+					double value=rs.getDouble(3);*/
+					System.out.println("\n\nDatapoint Name => "+datapoint_name);// + "\t- " + dt+ "\t- " + value);
+					ResultSet rs1=mig.getDataFromDatapoint(datapoint_name);
+					try {
+						while (rs1.next())
+						{
+								String dpname = rs1.getString(1);
+								Date dt=rs1.getDate(2);
+								double value=rs1.getDouble(3);
+								System.out.println(dpname + "\t- " + dt+ "\t- " + value);
+						}
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		CassandraWrapper cw=new CassandraWrapper();
+		cw.addKeyspacetoCassandra();
 		
-		insertData() ;
-		retrieveData() ;
-		updateData() ;
-		retrieveData() ;/*
+		insertData();
+		retrieveData();
+		updateData();
+		retrieveData();
 		deleteData() ;
-        */
+        
 	}
 	
 	
