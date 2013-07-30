@@ -2,16 +2,18 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
-	<classpathentry kind="lib" path="/home/nikunj/mostnosql/mostnosql/JarFiles/cassandra-all-0.7.4.jar"/>
-	<classpathentry kind="lib" path="/home/nikunj/mostnosql/mostnosql/JarFiles/cassandra-javautils-0.7.0.jar"/>
-	<classpathentry kind="lib" path="/home/nikunj/mostnosql/mostnosql/JarFiles/commons-lang-2.4.jar"/>
-	<classpathentry kind="lib" path="/home/nikunj/mostnosql/mostnosql/JarFiles/google-collect-1.0.jar"/>
-	<classpathentry kind="lib" path="/home/nikunj/mostnosql/mostnosql/JarFiles/hector-core-0.7.0-29.jar"/>
-	<classpathentry kind="lib" path="/home/nikunj/mostnosql/mostnosql/JarFiles/high-scale-lib-1.1.1.jar"/>
-	<classpathentry kind="lib" path="/home/nikunj/mostnosql/mostnosql/JarFiles/libthrift-0.5.0.jar"/>
-	<classpathentry kind="lib" path="/home/nikunj/mostnosql/mostnosql/JarFiles/log4j-1.2.15.jar"/>
 	<classpathentry kind="lib" path="/home/nikunj/mostnosql/mostnosql/JarFiles/mysql-connector-java-5.1.18-bin.jar"/>
-	<classpathentry kind="lib" path="/home/nikunj/mostnosql/mostnosql/JarFiles/perf4j-0.9.12.jar"/>
-	<classpathentry kind="lib" path="/home/nikunj/mostnosql/mostnosql/JarFiles/slf4j-api-1.6.1.jar"/>
+	<classpathentry kind="lib" path="/home/nikunj/mostnosql/mostnosql/JarFilesNew/cassandra-thrift-1.1.0.jar"/>
+	<classpathentry kind="lib" path="/home/nikunj/mostnosql/mostnosql/JarFilesNew/commons-lang-2.4.jar"/>
+	<classpathentry kind="lib" path="/home/nikunj/mostnosql/mostnosql/JarFilesNew/commons-pool-1.5.3.jar"/>
+	<classpathentry kind="lib" path="/home/nikunj/mostnosql/mostnosql/JarFilesNew/FastInfoset-1.2.2.jar"/>
+	<classpathentry kind="lib" path="/home/nikunj/mostnosql/mostnosql/JarFilesNew/guava-r09.jar"/>
+	<classpathentry kind="lib" path="/home/nikunj/mostnosql/mostnosql/JarFilesNew/hector-core-1.1-2.jar"/>
+	<classpathentry kind="lib" path="/home/nikunj/mostnosql/mostnosql/JarFilesNew/hector-core-sources-1.1-2.jar"/>
+	<classpathentry kind="lib" path="/home/nikunj/mostnosql/mostnosql/JarFilesNew/slf4j-api-1.6.1.jar"/>
+	<classpathentry kind="lib" path="/home/nikunj/mostnosql/mostnosql/JarFilesNew/speed4j-0.9.jar"/>
+	<classpathentry kind="lib" path="/home/nikunj/mostnosql/mostnosql/JarFilesNew/uuid-3.2.0.jar"/>
+	<classpathentry kind="lib" path="/home/nikunj/mostnosql/mostnosql/JarFilesNew/slf4j-simple-1.6.1.jar"/>
+	<classpathentry kind="lib" path="/home/nikunj/mostnosql/mostnosql/JarFilesNew/libthrift-0.9.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

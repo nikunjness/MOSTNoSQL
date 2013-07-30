@@ -23,7 +23,7 @@ public class CassandraExample {
             Cluster cluster = HFactory.getOrCreateCluster("Test Cluster", "localhost:9160");
             
             //Create a keyspace object from the existing keyspace we created using CLI
-            Keyspace keyspace = HFactory.createKeyspace("AuthDB", cluster);
+            Keyspace keyspace = HFactory.createKeyspace("mostkeyspace", cluster);
             
             //Create a mutator object for this keyspace using utf-8 encoding
             Mutator<String> mutator = HFactory.createMutator(keyspace, stringSerializer);
@@ -130,6 +130,8 @@ public class CassandraExample {
 	public static void main(String[] args) {
 		Migration mig=new Migration();
 		mig.setConnection();
+		CassandraWrapper cw=new CassandraWrapper();
+		cw.setEnvironment();
 		ResultSet rs=mig.getAllDatapoints();
 		try {
 			while (rs.next())
@@ -156,15 +158,17 @@ public class CassandraExample {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		CassandraWrapper cw=new CassandraWrapper();
-		cw.addKeyspacetoCassandra();
+		
+		/*
 		
 		insertData();
 		retrieveData();
 		updateData();
 		retrieveData();
 		deleteData() ;
-        
+         */ 
+		
+		
 	}
 	
 	
