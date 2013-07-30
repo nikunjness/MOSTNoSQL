@@ -7,17 +7,27 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
+import org.apache.cassandra.thrift.InvalidRequestException;
+import org.apache.thrift.TException;
+
 
 import me.prettyprint.cassandra.serializers.DateSerializer;
+import me.prettyprint.cassandra.serializers.DoubleSerializer;
+import me.prettyprint.cassandra.serializers.UUIDSerializer;
+import me.prettyprint.cassandra.service.ColumnSliceIterator;
 import me.prettyprint.cassandra.service.ThriftKsDef;
 import me.prettyprint.cassandra.utils.TimeUUIDUtils;
 import me.prettyprint.hector.api.Cluster;
 import me.prettyprint.hector.api.Keyspace;
+import me.prettyprint.hector.api.beans.OrderedRows;
+import me.prettyprint.hector.api.beans.Row;
 import me.prettyprint.hector.api.ddl.ColumnFamilyDefinition;
 import me.prettyprint.hector.api.ddl.ComparatorType;
 import me.prettyprint.hector.api.ddl.KeyspaceDefinition;
 import me.prettyprint.hector.api.factory.HFactory;
 import me.prettyprint.hector.api.mutation.Mutator;
+import me.prettyprint.hector.api.query.QueryResult;
+import me.prettyprint.hector.api.query.RangeSlicesQuery;
 
 public class CassandraWrapper {
 	public Cluster myCluster=null;
@@ -27,21 +37,43 @@ public class CassandraWrapper {
 	public KeyspaceDefinition ksdef=null;
 	public ColumnFamilyDefinition cfdef=null;
 	public static Keyspace keyspace=null;
-	void setEnvironment()
+	private static final ColumnSliceIterator.ColumnSliceFinish<UUID> FINISH = new ColumnSliceIterator.ColumnSliceFinish<UUID>() {
+
+@Override
+public UUID function() {
+return TimeUUIDUtils.getUniqueTimeUUIDinMillis();
+}
+};
+	void setEnvironment() throws InvalidRequestException,TException
 	{
-		myCluster = HFactory.getOrCreateCluster("Test Sample","localhost:9160");
-		ksdef=myCluster.describeKeyspace(keyspaceName);
-		if(ksdef==null)
-		addKeyspacetoCassandra();		
-		keyspace=HFactory.createKeyspace("mostkeyspace", myCluster);
+		try
+		{
+			myCluster = HFactory.getOrCreateCluster("Test Sample","localhost:9160");
+			ksdef=myCluster.describeKeyspace(keyspaceName);
+			if(ksdef==null)
+			addKeyspacetoCassandra();		
+			keyspace=HFactory.createKeyspace("mostkeyspace", myCluster);
+		}
+		catch(Exception e)
+		{
+			System.out.print("Unalble to setup environment");
+			e.printStackTrace();
+		}
 	}
-	void addKeyspacetoCassandra()
+	void addKeyspacetoCassandra() throws InvalidRequestException,TException
 	{
-		ColumnFamilyDefinition cfDef = HFactory.createColumnFamilyDefinition(keyspaceName,cfdatapoint,ComparatorType.BYTESTYPE);
-		int replicationFactor=1;
-		KeyspaceDefinition newKeyspace = HFactory.createKeyspaceDefinition(keyspaceName,ThriftKsDef.DEF_STRATEGY_CLASS,replicationFactor,Arrays.asList(cfDef));
-		//Add the schema to the cluster.
-		myCluster.addKeyspace(newKeyspace);		
+		try
+		{
+			ColumnFamilyDefinition cfDef = HFactory.createColumnFamilyDefinition(keyspaceName,cfdatapoint,ComparatorType.BYTESTYPE);
+			int replicationFactor=1;
+			KeyspaceDefinition newKeyspace = HFactory.createKeyspaceDefinition(keyspaceName,ThriftKsDef.DEF_STRATEGY_CLASS,replicationFactor,Arrays.asList(cfDef));
+			//Add the schema to the cluster.
+			myCluster.addKeyspace(newKeyspace);
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
 	}
 	void dropkeyspace()
 	{
@@ -95,6 +127,7 @@ public class CassandraWrapper {
 	}
 	void insertData(String dpname,Date d,Timestamp u,double value)
 	{
+		
 		cfdef=getCfdf(dpname);
 		long timeInMicroSeconds=u.getTime();
 		UUID timeUUIDColumnName = TimeUUIDUtils.getTimeUUID(timeInMicroSeconds);
@@ -103,7 +136,55 @@ public class CassandraWrapper {
 		Mutator<Date> mu=HFactory.createMutator(keyspace, ds);
 		mu.insert(d, cfdef.getName(), HFactory.createColumn(timeUUIDColumnName, value));
 		
+		
 	}
-}
+	void readData()
+	{
+		int row_count = 100;
+		System.out.println("\n\n Readind data from con1 table =>\n");
+		DateSerializer dt=new DateSerializer();
+		UUIDSerializer ud=new UUIDSerializer();
+		DoubleSerializer ds=new DoubleSerializer();
+		RangeSlicesQuery<Date, UUID, Double> sl=HFactory.createRangeSlicesQuery(keyspace, dt, ud,ds);
+		//ColumnSliceIterator<Date, UUID, Double> csit=new ColumnSliceIterator<Date, UUID, Double>(sl,null,FINISH,false);
+		sl.setColumnFamily("rhu2").setRange(null, null, false, 10)
+        .setRowCount(row_count);
+		Date Lastkey=null;
+	
+		
+		/*QueryResult<ColumnSlice<UUID,Double>> qr=sl.execute();
+		System.out.println("\nInserted data is as follows:\n" + qr.get());*/
+		while (true) {
+				sl.setKeys(Lastkey,null);
+			 QueryResult<OrderedRows<Date, UUID, Double>> result = sl.execute();
+	            OrderedRows<Date, UUID, Double> rows = result.get();
+	            Iterator<Row<Date, UUID, Double>> rowsIterator = rows.iterator();
+
+	            // we'll skip this first one, since it is the same as the last one from previous time we executed
+	            if (Lastkey != null && rowsIterator != null) rowsIterator.next();   
+
+	            while (rowsIterator.hasNext()) {
+	              Row<Date, UUID, Double> row = rowsIterator.next();
+	              Lastkey = row.getKey();
+
+	              if (row.getColumnSlice().getColumns().isEmpty()) {
+	                continue;
+	              }
+
+
+	              System.out.println(row);
+	            }
+
+	            if (rows.getCount() < row_count)
+	                break;
+	        }
+			
+		}
+			
+		}
+		
+	
+	
+
 
 

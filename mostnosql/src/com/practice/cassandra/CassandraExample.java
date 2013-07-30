@@ -4,6 +4,9 @@ import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.apache.cassandra.thrift.InvalidRequestException;
+import org.apache.thrift.TException;
+
 import me.prettyprint.cassandra.serializers.StringSerializer;
 import me.prettyprint.hector.api.Cluster;
 import me.prettyprint.hector.api.Keyspace;
@@ -134,7 +137,15 @@ public class CassandraExample {
 		Migration mig=new Migration();
 		mig.setConnection();
 		CassandraWrapper cw=new CassandraWrapper();
-		cw.setEnvironment();
+		try {
+			cw.setEnvironment();
+		} catch (InvalidRequestException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (TException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		//cw.createColumnfamily("tem1");
 		cw.checkExist("tem1");
 		ResultSet rs=mig.getAllDatapoints();
@@ -166,6 +177,7 @@ public class CassandraExample {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		cw.readData();
 		
 		/*
 		
