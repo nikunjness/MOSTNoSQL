@@ -13,6 +13,7 @@ import org.apache.thrift.TException;
 
 import me.prettyprint.cassandra.serializers.DateSerializer;
 import me.prettyprint.cassandra.serializers.DoubleSerializer;
+import me.prettyprint.cassandra.serializers.LongSerializer;
 import me.prettyprint.cassandra.serializers.UUIDSerializer;
 import me.prettyprint.cassandra.service.ColumnSliceIterator;
 import me.prettyprint.cassandra.service.ThriftKsDef;
@@ -90,7 +91,7 @@ return TimeUUIDUtils.getUniqueTimeUUIDinMillis();
 		else
 		{
 			cfcreate= cfname.toLowerCase();
-			if(!checkExist(cfcreate))
+			if(checkExist(cfcreate)==false)
 			{
 				cfdef=HFactory.createColumnFamilyDefinition(keyspaceName, cfcreate);
 				myCluster.addColumnFamily(cfdef, true);
@@ -127,15 +128,26 @@ return TimeUUIDUtils.getUniqueTimeUUIDinMillis();
 	}
 	void insertData(String dpname,Date d,Timestamp u,double value)
 	{
+		try
+		{
+			long timeInMicroSeconds=u.getTime();
+			//UUID timeUUIDColumnName = TimeUUIDUtils.getTimeUUID(timeInMicroSeconds);
+			System.out.println(d+"\t"+timeInMicroSeconds+"\t"+value);
+			DateSerializer ds=new DateSerializer();
+			Mutator<Date> mu=HFactory.createMutator(keyspace, ds);
+			mu.insert(d, dpname, HFactory.createColumn(timeInMicroSeconds, value));
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
 		
-		cfdef=getCfdf(dpname);
-		long timeInMicroSeconds=u.getTime();
-		UUID timeUUIDColumnName = TimeUUIDUtils.getTimeUUID(timeInMicroSeconds);
-		System.out.println(d+"\t"+timeUUIDColumnName+"\t"+value);
-		DateSerializer ds=new DateSerializer();
-		Mutator<Date> mu=HFactory.createMutator(keyspace, ds);
-		mu.insert(d, cfdef.getName(), HFactory.createColumn(timeUUIDColumnName, value));
-		
+	}
+	void setColumnfamilyDefination(String cfname)
+	{
+		if(checkExist(cfname)==false)
+		createColumnfamily(cfname);
+		cfdef=getCfdf(cfname);
 		
 	}
 	void readData()
@@ -143,9 +155,10 @@ return TimeUUIDUtils.getUniqueTimeUUIDinMillis();
 		int row_count = 100;
 		System.out.println("\n\n Readind data from con1 table =>\n");
 		DateSerializer dt=new DateSerializer();
-		UUIDSerializer ud=new UUIDSerializer();
+		LongSerializer ls=new LongSerializer();
+		//UUIDSerializer ud=new UUIDSerializer();
 		DoubleSerializer ds=new DoubleSerializer();
-		RangeSlicesQuery<Date, UUID, Double> sl=HFactory.createRangeSlicesQuery(keyspace, dt, ud,ds);
+		RangeSlicesQuery<Date, Long, Double> sl=HFactory.createRangeSlicesQuery(keyspace, dt, ls,ds);
 		//ColumnSliceIterator<Date, UUID, Double> csit=new ColumnSliceIterator<Date, UUID, Double>(sl,null,FINISH,false);
 		sl.setColumnFamily("rhu2").setRange(null, null, false, 10)
         .setRowCount(row_count);
@@ -156,15 +169,15 @@ return TimeUUIDUtils.getUniqueTimeUUIDinMillis();
 		System.out.println("\nInserted data is as follows:\n" + qr.get());*/
 		while (true) {
 				sl.setKeys(Lastkey,null);
-			 QueryResult<OrderedRows<Date, UUID, Double>> result = sl.execute();
-	            OrderedRows<Date, UUID, Double> rows = result.get();
-	            Iterator<Row<Date, UUID, Double>> rowsIterator = rows.iterator();
+			 QueryResult<OrderedRows<Date, Long, Double>> result = sl.execute();
+	            OrderedRows<Date, Long, Double> rows = result.get();
+	            Iterator<Row<Date, Long, Double>> rowsIterator = rows.iterator();
 
 	            // we'll skip this first one, since it is the same as the last one from previous time we executed
 	            if (Lastkey != null && rowsIterator != null) rowsIterator.next();   
 
 	            while (rowsIterator.hasNext()) {
-	              Row<Date, UUID, Double> row = rowsIterator.next();
+	              Row<Date, Long, Double> row = rowsIterator.next();
 	              Lastkey = row.getKey();
 
 	              if (row.getColumnSlice().getColumns().isEmpty()) {
