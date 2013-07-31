@@ -31,7 +31,7 @@ public class CassandraExample {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		/*Migration mig=new Migration();
+		Migration mig=new Migration();
 		mig.setConnection();
 		
 		ResultSet rs=mig.getAllDatapoints();
@@ -39,6 +39,7 @@ public class CassandraExample {
 			while (rs.next())
 			{
 					String datapoint_name = rs.getString(1);
+					cw.readData(datapoint_name);
 					/*Date dt=rs.getDate(2);
 					double value=rs.getDouble(3);*/
 					/*System.out.println("\n\nDatapoint Name => "+datapoint_name);// + "\t- " + dt+ "\t- " + value);
@@ -57,18 +58,20 @@ public class CassandraExample {
 					} catch (SQLException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
-					}
+					}*/
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}*/
-		cw.readData();
+		}
+		//cw.readData();
 		
 		
 		
 		
-	}
-	
-	
 }
+		}
+
+	
+	
+

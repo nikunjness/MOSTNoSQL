@@ -150,7 +150,7 @@ return TimeUUIDUtils.getUniqueTimeUUIDinMillis();
 		cfdef=getCfdf(cfname);
 		
 	}
-	void readData()
+	void readData(String datapoint)
 	{
 		int row_count = 100;
 		System.out.println("\n\n Readind data from con1 table =>\n");
@@ -160,7 +160,7 @@ return TimeUUIDUtils.getUniqueTimeUUIDinMillis();
 		DoubleSerializer ds=new DoubleSerializer();
 		RangeSlicesQuery<Date, Long, Double> sl=HFactory.createRangeSlicesQuery(keyspace, dt, ls,ds);
 		//ColumnSliceIterator<Date, UUID, Double> csit=new ColumnSliceIterator<Date, UUID, Double>(sl,null,FINISH,false);
-		sl.setColumnFamily("rhu2").setRange(null, null, false, 10)
+		sl.setColumnFamily(datapoint).setRange(null, null, false, 10)
         .setRowCount(row_count);
 		Date Lastkey=null;
 	
