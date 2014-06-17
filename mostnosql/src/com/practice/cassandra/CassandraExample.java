@@ -40,9 +40,9 @@ public class CassandraExample {
 			{
 					String datapoint_name = rs.getString(1);
 					cw.readData(datapoint_name);
-					/*Date dt=rs.getDate(2);
-					double value=rs.getDouble(3);*/
-					/*System.out.println("\n\nDatapoint Name => "+datapoint_name);// + "\t- " + dt+ "\t- " + value);
+					Date dt=rs.getDate(2);
+					double value=rs.getDouble(3);
+					System.out.println("\n\nDatapoint Name => "+datapoint_name);// + "\t- " + dt+ "\t- " + value);
 					cw.createColumnfamily(datapoint_name);
 					ResultSet rs1=mig.getDataFromDatapoint(datapoint_name);
 					try {
@@ -58,13 +58,13 @@ public class CassandraExample {
 					} catch (SQLException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
-					}*/
+					}
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		//cw.readData();
+		cw.readData();
 		
 		
 		
